@@ -1,0 +1,26 @@
+// Update with your config settings.
+
+/**
+ * @type { Object.<string, import("knex").Knex.Config> }
+ */
+module.exports = {
+
+  development: {
+    client: 'mysql',
+    connection: {
+      database: 'myBobcat',
+      user:     'root',
+      password: ''
+    }
+  },
+
+  production: {
+    client: 'mysql',
+    connection: {
+      database: 'my_db',
+      user:     'root',
+      password: ''
+    }
+  }
+
+};
