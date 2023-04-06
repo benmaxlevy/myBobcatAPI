@@ -5,7 +5,8 @@
 exports.up = function(knex) {
  return knex.schema.createTable("users", (table) => {
   table.increments();
-  table.string('email').notNullable();
+  table.string("name").notNullable();
+  table.string('email').notNullable().unique();
   table.string('password').notNullable();
   table.enu("permissions", ["student", "admin"]).notNullable().defaultTo("student");
   table.timestamp('created_at').defaultTo(knex.fn.now())
