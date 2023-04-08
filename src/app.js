@@ -9,6 +9,9 @@ require("dotenv").config();
 // route imports
 const auth = require("./routes/auth");
 
+// middleware imports
+const isLoggedIn = require("./middleware/isLoggedIn");
+
 // using routes
 app.use(auth);
 
@@ -20,7 +23,10 @@ app.get("*", (req, res) => {
 // error handler
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(500).json({message: "Something went wrong."})
+    if (res.headersSent) {
+        return next(err);
+    }
+    return res.status(500).json({message: "Something went wrong."})
 });
 
 // start server
