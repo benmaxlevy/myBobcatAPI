@@ -7,13 +7,15 @@ const express = require("express"),
 require("dotenv").config();
 
 // route imports
-const auth = require("./routes/auth");
+const auth = require("./routes/auth"),
+    events = require("./routes/events");
 
 // middleware imports
 const isLoggedIn = require("./middleware/isLoggedIn");
 
 // using routes
 app.use(auth);
+app.use("/events", events);
 
 // 404
 app.get("*", (req, res) => {

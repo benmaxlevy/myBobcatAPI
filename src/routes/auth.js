@@ -20,6 +20,11 @@ authRouter.post("/register", (req, res, next) => {
     if(process.env.RUN_TYPE === "dev")
         permission = "admin";
 
+    // check if all body are there
+
+    if(req.body.name === undefined || req.body.email === undefined)
+        return res.status(400).json({mesage: "Not enough body provided."});
+
     // first, check if the email is in use
     knex("users")
         .where({ email: req.body.email })
@@ -50,8 +55,8 @@ authRouter.post("/register", (req, res, next) => {
                                 permissions: permission
                             })
                             .catch(err => next(err));
-                                // if successful, http 200 + message
-                                return res.status(200).json({message: "Successfully created user"});
+                        // if successful, http 200 + message
+                        return res.status(200).json({message: "Successfully created user"});
                     });
                 });
             }
