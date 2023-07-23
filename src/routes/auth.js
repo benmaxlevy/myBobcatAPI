@@ -80,6 +80,7 @@ authRouter.post("/login", async (req, res, next) => {
                 // return JWT - expires in 7 hours
                 jwt.sign({
                     email: req.body.email,
+                    id: user[0].id,
                     permissions: user[0].permissions,
                     exp: Math.floor(Date.now() / 1000) + (420 * 60)
                 }, process.env.JWT_SECRET, (err, token) => {

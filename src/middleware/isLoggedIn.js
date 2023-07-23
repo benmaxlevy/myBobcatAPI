@@ -8,8 +8,7 @@ require("dotenv").config();
 const isLoggedIn = (req, res, next) => {
     if(req.get("authorization")) {
         let authorization = req.get("authorization");
-        // isolate the JWT
-        authorization = authorization.split(" ")[1];
+
         // verify JWT
         jwt.verify(authorization, process.env.JWT_SECRET, (err, decoded) => {
             if(err)
