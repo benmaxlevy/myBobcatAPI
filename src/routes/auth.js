@@ -89,6 +89,8 @@ authRouter.post("/login", async (req, res, next) => {
                     else
                         return res.status(200).json({message: "Successfully logged in", jwt: token});
                 });
+            else
+                return res.status(401).json({message: "Incorrect credentials."});
         } else {
             return res.status(401).json({message: "Incorrect credentials."});
         }
