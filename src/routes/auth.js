@@ -99,4 +99,23 @@ authRouter.post("/login", async (req, res, next) => {
     }
 });
 
+// delete all user data
+authRouter.delete("/user", isLoggedIn, async (req, res, next) => {
+    // use req.jwt.id to find user
+    // delete all events whose `creator_id` is req.jwt.id
+    try {
+        await knex("events")
+            .where({ creator_id: req.jwt.id })
+            .del();
+        // delete user
+        await knex("users")
+            .where({ id: req.jwt.id })
+            .del();
+        // return 200
+        return res.status(200).json({message: "Successfully deleted user."});
+    } catch (err) {
+        next(err);
+    }
+});
+
 module.exports = authRouter;
