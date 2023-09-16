@@ -8,7 +8,8 @@ require("dotenv").config();
 
 // route imports
 const auth = require("./routes/auth"),
-    events = require("./routes/events");
+    events = require("./routes/events"),
+    schedule = require("./routes/schedule");
 
 // middleware imports
 const isLoggedIn = require("./middleware/isLoggedIn");
@@ -16,6 +17,7 @@ const isLoggedIn = require("./middleware/isLoggedIn");
 // using routes
 app.use(auth);
 app.use("/events", events);
+app.use("/schedule", schedule);
 
 // 404
 app.get("*", (req, res) => {
