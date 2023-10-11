@@ -11,8 +11,9 @@ exports.up = function(knex) {
             .foreign("creator_id")
             .references("users.id")
         table.datetime("date_time").notNullable();
-        table.timestamp('created_at').defaultTo(knex.fn.now())
-        table.timestamp('updated_at').defaultTo(knex.fn.now())
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
+        table.boolean('approved').defaultTo(false);
     });
 };
 
