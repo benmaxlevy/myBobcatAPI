@@ -5,6 +5,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable("events", (table) => {
         table.increments("id");
+        table.enu("type", ["schoolwide", "club"]).notNullable().defaultTo("club");
         table.string("name").notNullable();
         table.integer("creator_id").unsigned();
         table

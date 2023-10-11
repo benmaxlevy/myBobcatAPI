@@ -30,7 +30,7 @@ eventsRouter.post("/", isLoggedIn, async (req, res, next) => {
         const approved = !(user.permissions === "leader");
 
         // check if all body are there
-        if(req.body.name === undefined || req.body.date_time === undefined)
+        if(req.body.name === undefined || req.body.date_time === undefined || req.body.type === undefined)
             return res.status(400).json({mesage: "Not enough body provided."});
         // if all conditions are satisfied, insert
         await knex("events")
@@ -38,6 +38,7 @@ eventsRouter.post("/", isLoggedIn, async (req, res, next) => {
                 name: req.body.name,
                 date_time: new Date(req.body.date_time),
                 creator_id: user.id,
+                type: req.body.type,
                 approved: approved
             });
         return res.status(200).json({message: "Success!"});
@@ -64,9 +65,8 @@ eventsRouter.put("/:eventId", isLoggedIn, async (req, res, next) => {
             return res.status(401).json({message: "Unauthorized. Must be an admin or student leader who's created the event."});
 
         // check if all body are there
-        if(req.body.name === undefined || req.body.date_time === undefined)
+        if(req.body.name === undefined || req.body.date_time === undefined || req.body.type === undefined)
             return res.status(400).json({mesage: "Not enough body provided."});
-
         // deal with approvals
         if(req.body.approved && user.permissions === "admin") {
             // if all conditions are satisfied, put
@@ -75,18 +75,24 @@ eventsRouter.put("/:eventId", isLoggedIn, async (req, res, next) => {
                 .update({
                     name: req.body.name,
                     approved: req.body.approved,
-                    date_time: new Date(req.body.date_time)
+                    date_time: new Date(req.body.date_time),
+                    type: req.body.type
                 });
             return res.status(200).json({message: "Success!"});
         } else {
             // not dealing with approvals
             // if all conditions are satisfied, put
-            await knex("events")
-                .where({id: req.params.eventId})
-                .update({
-                    name: req.body.name,
-                    date_time: new Date(req.body.date_time)
-                });
+            try {
+                await knex("events")
+                    .where({id: req.params.eventId})
+                    .update({
+                        name: req.body.name,
+                        date_time: new Date(req.body.date_time),
+                        type: req.body.type
+                    });
+            } catch (e) {
+                console.log(e);
+            }
             return res.status(200).json({message: "Success!"});
         }
 
