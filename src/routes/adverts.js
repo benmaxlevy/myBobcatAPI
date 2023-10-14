@@ -12,7 +12,17 @@ advertsRouter.use(bodyParser.urlencoded({ extended: false }));
 // set up parsing files
 advertsRouter.use(fileUpload());
 
-advertsRouter.post("/", isLoggedIn, async (req, res) => {
+advertsRouter.get("/", async (req, res, next) => {
+    // return list of adverts
+    try {
+        const adverts = await knex("adverts");
+        return res.status(200).json({adverts: adverts});
+    } catch(err) {
+        next(err);
+    }
+});
+
+advertsRouter.post("/", isLoggedIn, async (req, res, next) => {
     // check if admin (only admins can make adverts with images)
 
     // req.jwt stores the DECODED jwt
@@ -32,12 +42,12 @@ advertsRouter.post("/", isLoggedIn, async (req, res) => {
 
         return res.status(200).json({message: "Success!"});
 
-    } catch {
-        return res.status(500).json({message: "Something went wrong."});
+    } catch(err) {
+        return next(err);
     }
 });
 
-advertsRouter.delete("/:eventId", isLoggedIn, async (req, res) => {
+advertsRouter.delete("/:eventId", isLoggedIn, async (req, res, next) => {
     // check if admin (only admins can make adverts with images)
     // req.jwt stores the DECODED jwt
     const user = req.jwt;
@@ -53,7 +63,7 @@ advertsRouter.delete("/:eventId", isLoggedIn, async (req, res) => {
 
         await fs.unlink("./public" + file.file_path, err => {
             if(err)
-                return res.status(500).json({message: "Something went wrong."});
+                return next(err);
         });
 
         // delete from db
@@ -63,8 +73,8 @@ advertsRouter.delete("/:eventId", isLoggedIn, async (req, res) => {
 
         return res.status(200).json({message: "Success!"});
 
-    } catch(e) {
-        return res.status(500).json({message: "Something went wrong."});
+    } catch(err) {
+        return next(err);
     }
 });
 
