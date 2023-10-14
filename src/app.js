@@ -9,7 +9,8 @@ require("dotenv").config();
 // route imports
 const auth = require("./routes/auth"),
     events = require("./routes/events"),
-    schedule = require("./routes/schedule");
+    schedule = require("./routes/schedule"),
+    adverts = require("./routes/adverts");
 
 // middleware imports
 const isLoggedIn = require("./middleware/isLoggedIn");
@@ -18,6 +19,10 @@ const isLoggedIn = require("./middleware/isLoggedIn");
 app.use(auth);
 app.use("/events", events);
 app.use("/schedule", schedule);
+app.use("/adverts", adverts);
+
+// serve static files (adverts)
+app.use(express.static("public"));
 
 // 404
 app.get("*", (req, res) => {

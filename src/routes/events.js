@@ -31,7 +31,7 @@ eventsRouter.post("/", isLoggedIn, async (req, res, next) => {
 
         // check if all body are there
         if(req.body.name === undefined || req.body.date_time === undefined || req.body.type === undefined)
-            return res.status(400).json({mesage: "Not enough body provided."});
+            return res.status(400).json({message: "Not enough body provided."});
         // if all conditions are satisfied, insert
         await knex("events")
             .insert({
