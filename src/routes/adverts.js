@@ -60,10 +60,9 @@ advertsRouter.delete("/:eventId", isLoggedIn, async (req, res, next) => {
         // get file from db
         let file = await knex("adverts").where({id: req.params.eventId});
         file = file[0];
-
         await fs.unlink("./public" + file.file_path, err => {
             if(err)
-                return next(err);
+                throw err;
         });
 
         // delete from db
