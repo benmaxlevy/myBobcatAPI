@@ -91,7 +91,7 @@ eventsRouter.put("/:eventId", isLoggedIn, async (req, res, next) => {
                         type: req.body.type
                     });
             } catch (e) {
-                console.log(e);
+                return next(e);
             }
             return res.status(200).json({message: "Success!"});
         }
