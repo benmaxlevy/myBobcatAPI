@@ -1,7 +1,8 @@
 // imports
 const express = require("express"),
     app = express(),
-    bodyParser = require("body-parser");
+    bodyParser = require("body-parser"),
+    path = require("path");
 
 // dotenv
 require("dotenv").config();
@@ -22,7 +23,7 @@ app.use("/schedule", schedule);
 app.use("/adverts", adverts);
 
 // serve static files (adverts)
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // 404
 app.get("*", (req, res) => {

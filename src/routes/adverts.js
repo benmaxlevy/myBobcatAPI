@@ -4,6 +4,7 @@ const express = require("express"),
     bodyParser = require("body-parser"),
     knex = require("../knexClient"),
     fs = require("fs"),
+    path = require("path"),
     isLoggedIn = require("../middleware/isLoggedIn");
 
 // set up bodyParser
@@ -32,7 +33,7 @@ advertsRouter.post("/", isLoggedIn, async (req, res, next) => {
         return res.status(401).json({message: "Unauthorized. Must be an admin."});
     try {
         // continue with file upload
-        await req.files["advert"].mv("./public/adverts/" + req.files["advert"].name);
+        await req.files["advert"].mv(path.join(__dirname, "..", "public", "adverts", req.files["advert"].name));
 
         // add filepath to db
         await knex("adverts")
@@ -60,7 +61,7 @@ advertsRouter.delete("/:eventId", isLoggedIn, async (req, res, next) => {
         // get file from db
         let file = await knex("adverts").where({id: req.params.eventId});
         file = file[0];
-        await fs.unlink("./public" + file.file_path, err => {
+        await fs.unlink(path.join(__dirname, "..", "public", file.file_path), err => {
             if(err)
                 throw err;
         });
