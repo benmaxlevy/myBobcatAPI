@@ -6,6 +6,9 @@ exports.seed = async function(knex) {
   // Deletes ALL existing entries
   await knex('schedule').del()
   await knex('schedule').insert([
-    {"day": 1}
+    {
+      "day": 1,
+      "type": "reg"
+    }
   ]);
 };

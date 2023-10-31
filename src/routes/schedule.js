@@ -11,12 +11,13 @@ scheduleRouter.use(bodyParser.urlencoded({ extended: false }));
 scheduleRouter.get("/", async (req, res, next) => {
     try {
         const day = await knex("schedule");
+
         // see if the day exists - if it doesn't, return an error
         if(!day[0]["day"])
             return res.status(400).json({message: "An error occurred."});
 
         // day exists - return
-        return res.status(200).json({day: day[0]["day"]});
+        return res.status(200).json({day: day[0]});
     } catch(err) {
         next(err);
     }
@@ -36,7 +37,8 @@ scheduleRouter.post("/", isLoggedIn,async (req, res, next) => {
         // insert new schedule w/ req.body.day
         await knex("schedule")
             .insert({
-               day: req.body.day
+                day: req.body.day,
+                type: req.body.type
             });
         return res.status(200).json({message: "Success!"});
     } catch (err) {
