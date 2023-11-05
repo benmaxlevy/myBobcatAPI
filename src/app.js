@@ -11,7 +11,8 @@ require("dotenv").config();
 const auth = require("./routes/auth"),
     events = require("./routes/events"),
     schedule = require("./routes/schedule"),
-    adverts = require("./routes/adverts");
+    adverts = require("./routes/adverts"),
+    users = require("./routes/users");
 
 // middleware imports
 const isLoggedIn = require("./middleware/isLoggedIn");
@@ -21,6 +22,7 @@ app.use(auth);
 app.use("/events", events);
 app.use("/schedule", schedule);
 app.use("/adverts", adverts);
+app.use("/users", users)
 
 // serve static files (adverts)
 app.use(express.static(path.join(__dirname, "public")));
