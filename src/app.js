@@ -11,6 +11,7 @@ require("dotenv").config();
 const auth = require("./routes/auth"),
     events = require("./routes/events"),
     schedule = require("./routes/schedule"),
+    individual_schedule = require("./routes/individual_schedule"),
     adverts = require("./routes/adverts"),
     users = require("./routes/users");
 
@@ -21,6 +22,7 @@ const isLoggedIn = require("./middleware/isLoggedIn");
 app.use(auth);
 app.use("/events", events);
 app.use("/schedule", schedule);
+app.use("/individual_schedule", individual_schedule);
 app.use("/adverts", adverts);
 app.use("/users", users)
 
