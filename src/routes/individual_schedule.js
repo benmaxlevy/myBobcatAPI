@@ -7,6 +7,22 @@ const express = require("express"),
 // set up bodyParser
 individualScheduleRouter.use(bodyParser.urlencoded({ extended: false }));
 
+// return all user's schedules
+individualScheduleRouter.get("/", isLoggedIn, async (req, res, next) => {
+try {
+        const userId = req.jwt.id;
+        const schedules = await knex("individual_schedules")
+            .where({
+                user_id: userId
+            });
+
+        return res.status(200).json({schedules: schedules});
+
+    } catch (e) {
+        next(e);
+    }
+});
+
 // get a user's class given the period and day number
 individualScheduleRouter.get("/day/:day/period/:period", isLoggedIn, async (req, res, next) => {
     try {
@@ -60,8 +76,8 @@ individualScheduleRouter.put("/day/:day/period/:period", isLoggedIn, async (req,
                 user_id: userId
             })
             .update({
-                period: req.body.period,
-                day_number: req.body.day_number,
+                period: req.params.period,
+                day_number: req.params.day,
                 class_name: req.body.class_name
             });
 

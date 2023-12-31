@@ -14,6 +14,8 @@ authRouter.use(bodyParser.urlencoded({ extended: false }));
 
 // register route
 authRouter.post("/register", (req, res, next) => {
+    console.log("here!");
+
     // note to self: USE ASYNC/AWAIT
     let permission = "student";
     // if in dev mode, make new user an admin
