@@ -27,7 +27,6 @@ try {
 individualScheduleRouter.get("/day/:day/period/:period", isLoggedIn, async (req, res, next) => {
     try {
         const userId = req.jwt.id;
-        console.log(req.params)
         // get individual_schedule where day_number=day & period=period
         let className = await knex("individual_schedules")
             .where({
@@ -35,9 +34,15 @@ individualScheduleRouter.get("/day/:day/period/:period", isLoggedIn, async (req,
                 user_id: userId,
                 period: req.params.period
             });
-        className = className[0].class_name;
 
-        return res.status(200).json({className: className});
+        // check if row exists
+        if(className.length !== 0) {
+            className = className[0].class_name;
+
+            return res.status(200).json({className: className});
+        } else {
+            return res.status(200).json({className: null});
+        }
 
     } catch (e) {
         next(e);

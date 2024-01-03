@@ -84,7 +84,7 @@ authRouter.post("/login", async (req, res, next) => {
                     email: req.body.email,
                     id: user[0].id,
                     permissions: user[0].permissions,
-                    exp: Math.floor(Date.now() / 1000) + (420 * 60)
+                    //exp: Math.floor(Date.now() / 1000) + (420 * 60)
                 }, process.env.JWT_SECRET, (err, token) => {
                     if(err)
                         next(err);
